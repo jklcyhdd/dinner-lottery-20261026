@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f4eddc" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="今晚吃什么" />
+    <meta name="description" content="每天抽一道减脂家常荤菜，记录吃过什么，直接截图给家人。" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+    <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>今晚吃什么</title>
+  </head>
+  <body>
+    <div class="paper-grain" aria-hidden="true"></div>
+    <div id="app" class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>今晚吃什么</h1>
+        </div>
+        <button id="data-button" class="icon-button" type="button" aria-label="打开备份与说明" title="备份与说明">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="5" r="1.5" />
+            <circle cx="12" cy="12" r="1.5" />
+            <circle cx="12" cy="19" r="1.5" />
+          </svg>
+        </button>
+      </header>
+
+      <main id="main-content">
+        <section id="tonight-view" class="view" aria-labelledby="tonight-title">
+          <div class="round-strip">
+            <div>
+              <span class="round-label">第 <strong id="round-number">1</strong> 轮</span>
+              <p id="round-copy">已确认 0 / 60 道</p>
+            </div>
+            <div class="round-stamp" aria-hidden="true">
+              <span id="round-count">0</span><small>/60</small>
+            </div>
+          </div>
+          <div class="progress-track" aria-hidden="true">
+            <span id="progress-fill"></span>
+          </div>
+
+          <div id="empty-state" class="empty-state">
+            <div class="plate-illustration" aria-hidden="true">
+              <span class="plate-ring"></span>
+              <span class="plate-stem">今晚</span>
+              <span class="plate-leaf plate-leaf-a"></span>
+              <span class="plate-leaf plate-leaf-b"></span>
+            </div>
+            <h2 id="tonight-title">一盘菜，两样固定搭配</h2>
+            <p class="lede"><strong>今天不用纠结。</strong> 从 60 道家常荤菜里抽一道；确认过的菜本轮不再出现，正好轮完一圈再开始。</p>
+            <button id="draw-button" class="button button-primary button-wide" type="button">
+              <span>抽一道菜</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5" /></svg>
+            </button>
+            <p class="fixed-note"><span>固定搭配</span> 小碗米饭 · 炒青菜</p>
+          </div>
+
+          <article id="result-card" class="result-card" hidden>
+            <div class="dish-visual">
+              <div class="dish-frame">
+                <img id="dish-image" src="assets/icons/icon.svg" alt="" />
+                <span class="dish-method" id="dish-method"></span>
+              </div>
+              <div class="dish-title">
+                <h2 id="dish-name"></h2>
+                <p class="time-line">
+                  <span id="dish-protein"></span>
+                  <span class="dot">·</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 7v5l3 2" /></svg>
+                  <span id="dish-time"></span>
+                  <span class="dot">·</span>
+                  <span>1 人份</span>
+                </p>
+              </div>
+            </div>
+
+            <div class="fixed-pairing">
+              <span>再加</span>
+              <strong>一小碗米饭</strong>
+              <i aria-hidden="true"></i>
+              <strong>一份炒青菜</strong>
+            </div>
+
+            <section class="recipe-section" aria-labelledby="ingredients-heading">
+              <div class="section-heading">
+                <span class="section-index">01</span>
+                <h3 id="ingredients-heading">一人份食材</h3>
+              </div>
+              <ul id="ingredient-list" class="ingredient-list"></ul>
+            </section>
+
+            <section class="recipe-section" aria-labelledby="steps-heading">
+              <div class="section-heading">
+                <span class="section-index">02</span>
+                <h3 id="steps-heading">照着做</h3>
+              </div>
+              <ol id="step-list" class="step-list"></ol>
+            </section>
+
+            <div class="checks-grid">
+              <section class="check-row">
+                <span class="check-label">熟透判断</span>
+                <p id="dish-doneness"></p>
+              </section>
+              <section class="check-row">
+                <span class="check-label">调味建议</span>
+                <p id="dish-seasoning"></p>
+              </section>
+            </div>
+
+            <p class="source-link-wrap"><a id="dish-source" target="_blank" rel="noreferrer">查看图片原始来源</a></p>
+
+            <div class="action-stack">
+              <button id="confirm-button" class="button button-primary" type="button">确认今晚吃这道</button>
+              <div class="secondary-actions">
+                <button id="reroll-button" class="button button-secondary" type="button">换一道</button>
+                <button id="snapshot-button" class="button button-secondary" type="button">进入截图卡</button>
+              </div>
+            </div>
+          </article>
+
+          <div id="confirmed-panel" class="confirmed-panel" hidden>
+            <div class="confirmed-mark" aria-hidden="true">✓</div>
+            <div>
+              <strong id="confirmed-title">今晚已经定下</strong>
+              <p id="confirmed-copy"></p>
+            </div>
+            <div class="confirmed-actions">
+              <button id="confirmed-snapshot-button" class="button button-secondary" type="button">今晚截图卡</button>
+              <button id="next-draw-button" class="button button-secondary" type="button">再抽一道</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="history-view" class="view" aria-labelledby="history-title" hidden>
+          <div class="screen-heading">
+            <h2 id="history-title">晚餐记录</h2>
+            <p>只保存在这台 iPhone 的 Safari 中。</p>
+          </div>
+          <div id="history-list" class="history-list"></div>
+        </section>
+
+        <section id="recipes-view" class="view" aria-labelledby="recipes-title" hidden>
+          <div class="screen-heading">
+            <h2 id="recipes-title">全部 60 道</h2>
+            <p>鱼虾、禽肉、牛羊、猪肉和蛋类家常做法。</p>
+          </div>
+          <label class="search-field">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6" /><path d="m16 16 4 4" /></svg>
+            <span class="sr-only">搜索菜名或食材</span>
+            <input id="recipe-search" type="search" inputmode="search" placeholder="搜菜名或食材" autocomplete="off" />
+          </label>
+          <p id="recipe-count" class="recipe-count"></p>
+          <div id="recipe-grid" class="recipe-grid"></div>
+        </section>
+      </main>
+
+      <nav class="tabbar" aria-label="主导航">
+        <button class="tab is-active" type="button" data-view="tonight-view" aria-current="page">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 0 1 16 0v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM8 14h.01M16 14h.01M9 17c1 .8 5 .8 6 0" /></svg>
+          <span>今晚</span>
+        </button>
+        <button class="tab" type="button" data-view="history-view">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" /><circle cx="18" cy="18" r="2" /></svg>
+          <span>历史</span>
+        </button>
+        <button class="tab" type="button" data-view="recipes-view">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h11a3 3 0 0 1 3 3v13H7a2 2 0 0 1-2-2zM8 4v16M11 8h5M11 12h5" /></svg>
+          <span>菜谱</span>
+        </button>
+      </nav>
+    </div>
+
+    <dialog id="recipe-dialog" class="detail-dialog">
+      <div class="dialog-head">
+        <span class="dialog-context">完整菜谱</span>
+        <button class="dialog-close" type="button" data-close-dialog aria-label="关闭">×</button>
+      </div>
+      <div id="detail-dialog-content"></div>
+    </dialog>
+
+    <dialog id="snapshot-dialog" class="snapshot-dialog">
+      <div class="snapshot-toolbar">
+        <div>
+          <strong>截图卡</strong>
+          <span>使用 iPhone 侧键＋音量上键截图</span>
+        </div>
+        <div class="snapshot-toolbar-actions">
+          <button id="share-button" class="text-button" type="button">分享文字</button>
+          <button class="dialog-close" type="button" data-close-dialog aria-label="关闭截图卡">×</button>
+        </div>
+      </div>
+      <div id="snapshot-content"></div>
+    </dialog>
+
+    <dialog id="data-dialog" class="detail-dialog">
+      <div class="dialog-head">
+        <div><h2>备份与说明</h2></div>
+        <button class="dialog-close" type="button" data-close-dialog aria-label="关闭">×</button>
+      </div>
+      <div class="data-panel">
+        <p>记录仅保存在当前 Safari。清理网站数据或卸载浏览器会删除记录，建议定期导出。</p>
+        <div class="data-actions">
+          <button id="export-button" class="button button-secondary" type="button">导出备份</button>
+          <label class="button button-secondary file-button">
+            恢复备份
+            <input id="import-input" type="file" accept="application/json,.json" />
+          </label>
+        </div>
+        <div class="about-block">
+          <h3>晚餐固定搭配</h3>
+          <p>每道主菜配一小碗米饭和一份炒青菜。主菜控制和油量，蛋白质食材按 1 人份给出。</p>
+          <h3>添加到主屏幕</h3>
+          <p>Safari 打开后点分享按钮，再选“添加到主屏幕”。添加后可以像普通应用一样全屏打开。</p>
+          <h3>食物安全</h3>
+          <p>熟透判断以中心温度、切面色泽和质地一起判断；禽肉达到 75°C，整块牛肉至少 63°C 并静置 3 分钟。家中温度计比计时更可靠。</p>
+          <h3>图片出处</h3>
+          <p>菜品图来自 HowToCook 仓库的原菜目录，按 Unlicense 使用并本地压缩。逐项路径见项目中的 IMAGE_CREDITS.md。</p>
+        </div>
+      </div>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
