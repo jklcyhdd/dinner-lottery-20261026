@@ -1,4 +1,4 @@
-const CACHE = "dinner-lottery-v9";
+const CACHE = "dinner-lottery-v15-preview";
 const DISH_IDS = [
   "blanched-shrimp",
   "bream-tofu-stew",
@@ -69,6 +69,7 @@ const CORE = [
   "./app.js",
   "./src/recipes.js",
   "./src/state.js",
+  "./src/share-card.js",
   "./manifest.webmanifest",
   "./assets/icons/apple-touch-icon.png",
   "./assets/icons/icon-192.png",

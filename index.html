@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#f4eddc" />
+    <meta name="theme-color" content="#f7f6f0" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="今晚吃什么" />
@@ -21,6 +21,7 @@
         <div>
           <h1>今晚吃什么</h1>
         </div>
+        <button id="home-button" class="text-button" type="button" hidden>返回首页</button>
         <button id="data-button" class="icon-button" type="button" aria-label="打开备份与说明" title="备份与说明">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <circle cx="12" cy="5" r="1.5" />
@@ -58,6 +59,7 @@
               <span>抽一道菜</span>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5" /></svg>
             </button>
+              <button id="resume-button" class="button button-secondary button-wide" type="button" hidden>查看刚才的菜</button>
             <p class="fixed-note"><span>固定搭配</span> 小碗米饭 · 炒青菜</p>
           </div>
 
@@ -164,7 +166,7 @@
       <nav class="tabbar" aria-label="主导航">
         <button class="tab is-active" type="button" data-view="tonight-view" aria-current="page">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 0 1 16 0v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zM8 14h.01M16 14h.01M9 17c1 .8 5 .8 6 0" /></svg>
-          <span>今晚</span>
+          <span>首页</span>
         </button>
         <button class="tab" type="button" data-view="history-view">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10" /><circle cx="18" cy="18" r="2" /></svg>
@@ -189,14 +191,26 @@
       <div class="snapshot-toolbar">
         <div>
           <strong>截图卡</strong>
-          <span>使用 iPhone 侧键＋音量上键截图</span>
+          <span>生成一张长图，直接发给妈妈</span>
         </div>
         <div class="snapshot-toolbar-actions">
-          <button id="share-button" class="text-button" type="button">分享文字</button>
           <button class="dialog-close" type="button" data-close-dialog aria-label="关闭截图卡">×</button>
         </div>
       </div>
+      <div class="snapshot-tools">
+        <button id="save-image-button" class="button button-primary" type="button">生成整张图片</button>
+        <button id="share-button" class="text-button" type="button">分享文字</button>
+      </div>
       <div id="snapshot-content"></div>
+      <div id="snapshot-image-view" hidden>
+        <p class="image-save-hint">已生成一整张图。长按下面图片 → 存储到“照片”，再从相册发给妈妈。不用截屏。</p>
+        <div class="snapshot-tools">
+          <button id="share-image-button" class="button button-primary" type="button" hidden>分享图片</button>
+          <button id="back-card-button" class="button button-secondary" type="button">返回菜谱</button>
+          <a id="download-image-link" class="text-button" download>下载图片</a>
+        </div>
+        <img id="exported-image" alt="包含食材、做法与熟透判断的完整菜谱长图">
+      </div>
     </dialog>
 
     <dialog id="data-dialog" class="detail-dialog">
@@ -221,7 +235,7 @@
           <h3>食物安全</h3>
           <p>熟透判断以中心温度、切面色泽和质地一起判断；禽肉达到 75°C，整块牛肉至少 63°C 并静置 3 分钟。家中温度计比计时更可靠。</p>
           <h3>图片出处</h3>
-          <p>菜品图来自 HowToCook 仓库的原菜目录，按 Unlicense 使用并本地压缩。逐项路径见项目中的 IMAGE_CREDITS.md。</p>
+          <p>多数菜品图来自 HowToCook（Unlicense）；葱烧海参照片由 Worldtravelwiki 拍摄，按 CC BY-SA 3.0 使用，来自 Wikimedia Commons。图片均保存于本地，逐图来源与修改说明见 IMAGE_CREDITS.md。</p>
         </div>
       </div>
     </dialog>

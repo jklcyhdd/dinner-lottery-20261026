@@ -1,4 +1,5 @@
 import { recipes, recipeById } from "./src/recipes.js";
+import { renderRecipeImage } from "./src/share-card.js";
 import {
   STORAGE_KEY,
   confirmDish,
@@ -20,6 +21,8 @@ const elements = {
   emptyState: $("#empty-state"),
   resultCard: $("#result-card"),
   drawButton: $("#draw-button"),
+  homeButton: $("#home-button"),
+  resumeButton: $("#resume-button"),
   dishImage: $("#dish-image"),
   dishMethod: $("#dish-method"),
   dishProtein: $("#dish-protein"),
@@ -47,6 +50,12 @@ const elements = {
   snapshotDialog: $("#snapshot-dialog"),
   snapshotContent: $("#snapshot-content"),
   shareButton: $("#share-button"),
+  saveImageButton: $("#save-image-button"),
+  imageView: $("#snapshot-image-view"),
+  exportedImage: $("#exported-image"),
+  shareImageButton: $("#share-image-button"),
+  backCardButton: $("#back-card-button"),
+  downloadImageLink: $("#download-image-link"),
   dataDialog: $("#data-dialog"),
   dataButton: $("#data-button"),
   exportButton: $("#export-button"),
@@ -58,6 +67,9 @@ let storageAvailable = true;
 let state;
 let lastConfirmedId = null;
 let activeSnapshotRecipe = null;
+let snapshotImageUrl = null;
+let snapshotImageFile = null;
+let snapshotImageRequest = 0;
 let toastTimer = 0;
 
 function readSavedState() {
@@ -135,6 +147,8 @@ function renderTonight() {
   elements.emptyState.hidden = Boolean(recipe);
   elements.resultCard.hidden = !recipe;
   elements.confirmedPanel.hidden = !confirmed;
+  elements.homeButton.hidden = !recipe;
+  elements.resumeButton.hidden = true;
   if (!recipe) return;
 
   setImage(elements.dishImage, recipe);
@@ -147,7 +161,7 @@ function renderTonight() {
   elements.doneness.textContent = recipe.doneness;
   elements.seasoning.textContent = recipe.seasoning;
   elements.source.href = recipe.source;
-  elements.source.textContent = "查看图片原始来源 · HowToCook / Unlicense";
+  elements.source.textContent = `查看图片原始来源 · ${recipe.photoCredit}`;
   elements.confirmButton.hidden = confirmed;
   elements.rerollButton.hidden = confirmed;
   elements.snapshotButton.textContent = confirmed ? "查看今晚截图卡" : "进入截图卡";
@@ -320,7 +334,7 @@ function openRecipeDetail(recipe) {
       <section class="check-row"><span class="check-label">熟透判断</span><p>${recipe.doneness}</p></section>
       <section class="check-row"><span class="check-label">调味建议</span><p>${recipe.seasoning}</p></section>
     </div>
-    <p class="source-link-wrap"><a href="${recipe.source}" target="_blank" rel="noreferrer">查看图片原始来源 · HowToCook / Unlicense</a></p>`;
+    <p class="source-link-wrap"><a href="${recipe.source}" target="_blank" rel="noreferrer">查看图片原始来源 · ${recipe.photoCredit}</a></p>`;
   elements.recipeDialog.showModal();
 }
 
@@ -328,14 +342,14 @@ function snapshotMarkup(recipe) {
   return `
     <article class="snapshot-card">
       <div class="snapshot-brand">
-        <span>今晚吃什么 · 私人晚餐签</span>
+        <span>今晚吃什么</span>
         <span>第 ${state.round} 轮</span>
       </div>
       <div class="snapshot-hero">
         <img src="${recipe.image}" alt="${recipe.name}成品">
         <div class="snapshot-title">
           <h2>${recipe.name}</h2>
-          <p><strong>${recipe.protein} · ${recipe.method}</strong><br>1 人份 · 约 ${recipe.minutes} 分钟<br>今晚请做这道，谢谢妈妈。</p>
+          <p><strong>${recipe.protein} · ${recipe.method}</strong><br>1 人份 · 约 ${recipe.minutes} 分钟</p>
         </div>
       </div>
       <div class="snapshot-meta">
@@ -356,6 +370,7 @@ function snapshotMarkup(recipe) {
       <footer class="snapshot-footer">
         <strong>米饭一小碗 · 青菜一盘</strong>
         <span>少油 · 一人份 · 今晚吃什么</span>
+        ${recipe.source.startsWith("https://commons.wikimedia.org/") ? `<p class="photo-credit">照片：<a href="${recipe.source}">${recipe.photoCredit}</a> · 缩放转 WebP</p>` : ""}
       </footer>
     </article>`;
 }
@@ -363,9 +378,70 @@ function snapshotMarkup(recipe) {
 function openSnapshot(recipe) {
   if (!recipe) return;
   activeSnapshotRecipe = recipe;
+  snapshotImageRequest += 1;
+  if (snapshotImageUrl) URL.revokeObjectURL(snapshotImageUrl);
+  snapshotImageUrl = null;
+  snapshotImageFile = null;
+  elements.exportedImage.removeAttribute("src");
+  elements.imageView.hidden = true;
+  elements.snapshotContent.hidden = false;
+  elements.saveImageButton.hidden = false;
+  elements.saveImageButton.disabled = false;
+  elements.saveImageButton.textContent = "生成整张图片";
   elements.snapshotContent.innerHTML = snapshotMarkup(recipe);
   if (elements.recipeDialog.open) elements.recipeDialog.close();
   elements.snapshotDialog.showModal();
+  elements.snapshotDialog.scrollTop = 0;
+}
+
+async function generateSnapshotImage() {
+  const recipe = activeSnapshotRecipe;
+  if (!recipe) return;
+  const request = ++snapshotImageRequest;
+  elements.saveImageButton.disabled = true;
+  elements.saveImageButton.textContent = "正在生成…";
+  try {
+    const blob = await renderRecipeImage(recipe);
+    if (request !== snapshotImageRequest || !elements.snapshotDialog.open) return;
+    if (snapshotImageUrl) URL.revokeObjectURL(snapshotImageUrl);
+    snapshotImageUrl = URL.createObjectURL(blob);
+    snapshotImageFile = new File([blob], `今晚吃什么-${recipe.name}.png`, { type: "image/png" });
+    elements.exportedImage.src = snapshotImageUrl;
+    elements.downloadImageLink.href = snapshotImageUrl;
+    elements.downloadImageLink.download = snapshotImageFile.name;
+    elements.shareImageButton.hidden = !navigator.canShare?.({ files: [snapshotImageFile] });
+    elements.snapshotContent.hidden = true;
+    elements.imageView.hidden = false;
+    elements.saveImageButton.hidden = true;
+    elements.snapshotDialog.scrollTop = 0;
+  } catch {
+    if (request === snapshotImageRequest) showToast("图片生成失败，请重试；未改动晚餐记录", 4000);
+  } finally {
+    if (request === snapshotImageRequest) {
+      elements.saveImageButton.disabled = false;
+      elements.saveImageButton.textContent = "生成整张图片";
+    }
+  }
+}
+
+async function shareSnapshotImage() {
+  if (!snapshotImageFile) return;
+  try {
+    await navigator.share({ files: [snapshotImageFile], title: `今晚吃：${activeSnapshotRecipe.name}` });
+  } catch (error) {
+    if (error?.name !== "AbortError") showToast("可长按下面整张图片保存到相册，再发给妈妈", 4000);
+  }
+}
+
+function showDrawHome() {
+  $$("dialog[open]").forEach((dialog) => dialog.close());
+  switchView("tonight-view");
+  elements.emptyState.hidden = false;
+  elements.resultCard.hidden = true;
+  elements.confirmedPanel.hidden = true;
+  elements.homeButton.hidden = true;
+  elements.resumeButton.hidden = !currentDisplayedRecipe();
+  elements.drawButton.focus({ preventScroll: true });
 }
 
 function shareTextFor(recipe) {
@@ -390,7 +466,7 @@ async function shareCurrentSnapshot() {
     await navigator.clipboard.writeText(text);
     showToast("菜谱文字已复制");
   } catch (error) {
-    if (error?.name !== "AbortError") showToast("分享不可用，可直接使用系统截图");
+    if (error?.name !== "AbortError") showToast("文字分享不可用，可点“生成整张图片”保存完整菜谱");
   }
 }
 
@@ -460,12 +536,22 @@ function makeRecipeTonight(recipe) {
 
 function bindEvents() {
   elements.drawButton.addEventListener("click", () => pickDish());
+  elements.homeButton.addEventListener("click", showDrawHome);
+  elements.resumeButton.addEventListener("click", renderTonight);
   elements.rerollButton.addEventListener("click", () => pickDish({ replace: true }));
   elements.confirmButton.addEventListener("click", confirmCurrentDish);
   elements.snapshotButton.addEventListener("click", () => openSnapshot(currentDisplayedRecipe()));
   elements.confirmedSnapshotButton.addEventListener("click", () => openSnapshot(currentDisplayedRecipe()));
   elements.nextDrawButton.addEventListener("click", () => pickDish());
   elements.shareButton.addEventListener("click", shareCurrentSnapshot);
+  elements.saveImageButton.addEventListener("click", generateSnapshotImage);
+  elements.shareImageButton.addEventListener("click", shareSnapshotImage);
+  elements.backCardButton.addEventListener("click", () => {
+    elements.imageView.hidden = true;
+    elements.snapshotContent.hidden = false;
+    elements.saveImageButton.hidden = false;
+    elements.snapshotDialog.scrollTop = 0;
+  });
   elements.dataButton.addEventListener("click", () => elements.dataDialog.showModal());
   elements.exportButton.addEventListener("click", downloadBackup);
   elements.importInput.addEventListener("change", (event) => {
@@ -474,7 +560,7 @@ function bindEvents() {
   });
 
   $$(".tab").forEach((tab) => {
-    tab.addEventListener("click", () => switchView(tab.dataset.view));
+    tab.addEventListener("click", () => tab.dataset.view === "tonight-view" ? showDrawHome() : switchView(tab.dataset.view));
   });
 
   elements.recipeSearch.addEventListener("input", () => {
