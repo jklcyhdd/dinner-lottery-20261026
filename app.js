@@ -1,4 +1,4 @@
-import { recipes, recipeById } from "./src/recipes.js";
+import { recipes, recipeById, replacementIds } from "./src/recipes.js";
 import { renderRecipeImage } from "./src/share-card.js";
 import {
   STORAGE_KEY,
@@ -12,6 +12,7 @@ import {
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const migrationOptions = { replacements: replacementIds, historyRecipes: [...recipeById.values()] };
 
 const elements = {
   roundNumber: $("#round-number"),
@@ -161,7 +162,7 @@ function renderTonight() {
   elements.doneness.textContent = recipe.doneness;
   elements.seasoning.textContent = recipe.seasoning;
   elements.source.href = recipe.source;
-  elements.source.textContent = `查看图片原始来源 · ${recipe.photoCredit}`;
+  elements.source.textContent = `${recipe.image.endsWith('.svg') ? '查看配图说明' : '查看图片原始来源'} · ${recipe.photoCredit}`;
   elements.confirmButton.hidden = confirmed;
   elements.rerollButton.hidden = confirmed;
   elements.snapshotButton.textContent = confirmed ? "查看今晚截图卡" : "进入截图卡";
@@ -319,7 +320,7 @@ function openRecipeDetail(recipe) {
       </div>
     </div>
     <div class="detail-actions">
-      <button class="button button-primary" type="button" data-make-tonight="${recipe.id}">抽它当今晚</button>
+      <button class="button button-primary" type="button" data-make-tonight="${recipe.id}" ${replacementIds[recipe.id] ? 'disabled' : ''}>${replacementIds[recipe.id] ? '原菜已移出抽签池' : '抽它当今晚'}</button>
       <button class="button button-secondary" type="button" data-snapshot-id="${recipe.id}">查看截图卡</button>
     </div>
     <section class="recipe-section">
@@ -334,7 +335,7 @@ function openRecipeDetail(recipe) {
       <section class="check-row"><span class="check-label">熟透判断</span><p>${recipe.doneness}</p></section>
       <section class="check-row"><span class="check-label">调味建议</span><p>${recipe.seasoning}</p></section>
     </div>
-    <p class="source-link-wrap"><a href="${recipe.source}" target="_blank" rel="noreferrer">查看图片原始来源 · ${recipe.photoCredit}</a></p>`;
+    <p class="source-link-wrap"><a href="${recipe.source}" target="_blank" rel="noreferrer">${recipe.image.endsWith('.svg') ? '查看配图说明' : '查看图片原始来源'} · ${recipe.photoCredit}</a></p>`;
   elements.recipeDialog.showModal();
 }
 
@@ -503,7 +504,7 @@ async function importBackup(file) {
   try {
     const parsed = createState(await file.text());
     if (parsed.warning) throw new Error("文件不是有效的备份");
-    const imported = sanitizeState(parsed.state, recipes);
+    const imported = sanitizeState(parsed.state, recipes, migrationOptions);
     if (!window.confirm("恢复备份会替换当前晚餐记录，继续吗？")) return;
     state = imported;
     lastConfirmedId = latestConfirmedId(state);
@@ -521,6 +522,10 @@ async function importBackup(file) {
 }
 
 function makeRecipeTonight(recipe) {
+  if (!recipe || !recipes.some((item) => item.id === recipe.id)) {
+    showToast("这道原菜已移出抽签池，请从新版菜谱中选一道");
+    return;
+  }
   if (state.eatenIds.includes(recipe.id) && state.pendingId !== recipe.id) {
     showToast("这道在本轮已经确认过了");
     return;
@@ -601,7 +606,7 @@ function bindEvents() {
 function initialize() {
   const saved = readSavedState();
   const restored = createState(saved.raw);
-  state = sanitizeState(restored.state, recipes);
+  state = sanitizeState(restored.state, recipes, migrationOptions);
   lastConfirmedId = latestConfirmedId(state);
   bindEvents();
   renderTonight();
@@ -617,6 +622,7 @@ function initialize() {
   }
 
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+    navigator.serviceWorker.addEventListener("controllerchange", () => window.location.reload());
     navigator.serviceWorker.register("./sw.js").catch(() => {
       showToast("离线缓存暂未启用，联网时重新打开可重试");
     });

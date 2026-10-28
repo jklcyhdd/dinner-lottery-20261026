@@ -1,5 +1,11 @@
 # Dish Image Credits
 
+## 2026-10-28 菜谱修订
+
+13道因换菜或改变做法而失配的照片已替换为原创SVG文字占位图，清楚标注“成品图待补”。SVG不是成品照片，不声称呈现实际烹调效果。待获得匹配且许可明确的照片后再补齐；没有产生图片API费用。
+
+7道移出的原菜仅供旧历史查看，其照片和署名保留。其他保留照片为菜品参考，实际分量以新版食材表为准。原有5张图片待优化的问题未冒充已完成。
+
 Most dish photos are source images from the [HowToCook repository](https://github.com/Anduin2017/HowToCook), released under the [Unlicense](https://github.com/Anduin2017/HowToCook/blob/master/LICENSE). The app bundles resized WebP copies for offline use. Exceptions are listed below.
 
 The exact source path for each image is recorded in `data/image-sources.json`. Files are available from:

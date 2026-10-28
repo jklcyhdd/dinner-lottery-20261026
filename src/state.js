@@ -124,11 +124,12 @@ export function serializeState(state) {
   return JSON.stringify(state);
 }
 
-export function sanitizeState(state, recipes) {
+export function sanitizeState(state, recipes, { replacements = {}, historyRecipes = recipes } = {}) {
   const validIds = new Set(recipes.map((recipe) => recipe.id));
-  const eatenIds = state.eatenIds.filter((id) => validIds.has(id));
+  const historyIds = new Set(historyRecipes.map((recipe) => recipe.id));
+  const eatenIds = [...new Set(state.eatenIds.map((id) => replacements[id] || id))].filter((id) => validIds.has(id));
   const pendingId = validIds.has(state.pendingId) ? state.pendingId : null;
-  const history = state.history.filter((item) => validIds.has(item.id));
+  const history = state.history.filter((item) => historyIds.has(item.id));
   return {
     ...state,
     eatenIds,

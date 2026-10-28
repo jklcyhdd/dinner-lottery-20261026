@@ -14,8 +14,10 @@
     "path": "dishes/aquatic/鳊鱼炖豆腐/鳊鱼炖豆腐.jpg"
   },
   "razor-clam-egg": {
-    "name": "蛏抱蛋",
-    "path": "dishes/aquatic/蛏抱蛋/3.jpeg"
+    "name": "蛏肉蒸蛋",
+    "path": "assets/dishes/razor-clam-egg.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
   },
   "scallion-sea-cucumber": {
     "name": "葱烧海参",
@@ -46,8 +48,10 @@
     ]
   },
   "mixed-grilled-fish": {
-    "name": "混合烤鱼",
-    "path": "dishes/aquatic/混合烤鱼/烤鱼.jpg"
+    "name": "一盘烤鱼",
+    "path": "assets/dishes/mixed-grilled-fish.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
   },
   "mustard-butter-prawns": {
     "name": "芥末黄油罗氏虾",
@@ -76,8 +80,10 @@
     "path": "dishes/aquatic/蒜香黄油虾/1.jpg"
   },
   "sweet-sour-carp": {
-    "name": "糖醋鲤鱼",
-    "path": "dishes/aquatic/糖醋鲤鱼/成品.jpg"
+    "name": "酸香鱼片",
+    "path": "assets/dishes/sweet-sour-carp.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
   },
   "pan-crispy-fish": {
     "name": "香煎翘嘴鱼",
@@ -88,7 +94,7 @@
     "path": "dishes/aquatic/小龙虾/成品.jpg"
   },
   "yangshuo-beer-fish": {
-    "name": "阳朔啤酒鱼",
+    "name": "少油番茄啤酒鱼",
     "path": "dishes/aquatic/阳朔啤酒鱼/阳朔啤酒鱼.png"
   },
   "braised-prawns": {
@@ -96,19 +102,21 @@
     "path": "dishes/aquatic/油焖大虾/油焖大虾.jpg"
   },
   "pakistani-beef-curry": {
-    "name": "巴基斯坦牛肉咖喱",
+    "name": "番茄咖喱牛肉",
     "path": "dishes/meat_dish/巴基斯坦牛肉咖喱/巴基斯坦牛肉咖喱.png"
   },
   "winter-melon-stuffed-pork": {
-    "name": "冬瓜酿肉",
-    "path": "dishes/meat_dish/冬瓜酿肉/冬瓜酿肉成品.jpg"
+    "name": "冬瓜肉末蒸",
+    "path": "assets/dishes/winter-melon-stuffed-pork.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
   },
   "black-bean-dace-greens": {
     "name": "豆豉鲮鱼油麦菜",
     "path": "dishes/meat_dish/豆豉鲮鱼油麦菜/豆豉鲮鱼油麦菜成品.jpg"
   },
   "dry-fried-chicken": {
-    "name": "干煸仔鸡",
+    "name": "少油青椒鸡丁",
     "path": "dishes/meat_dish/干煸仔鸡/干煸仔鸡成品.jpg"
   },
   "kung-pao-chicken": {
@@ -130,7 +138,7 @@
     ]
   },
   "ginger-chicken": {
-    "name": "姜炒鸡",
+    "name": "姜葱焖鸡",
     "path": "dishes/meat_dish/姜炒鸡/姜炒鸡.jpg"
   },
   "braised-beef": {
@@ -138,7 +146,7 @@
     "path": "dishes/meat_dish/酱牛肉/酱牛肉.jpg"
   },
   "sauce-pork-ribs": {
-    "name": "酱排骨",
+    "name": "家常酱排骨",
     "path": "dishes/meat_dish/酱排骨/2.jpeg"
   },
   "jiao-bai-pork": {
@@ -146,7 +154,7 @@
     "path": "dishes/meat_dish/茭白炒肉/2.jpeg"
   },
   "air-fry-chicken": {
-    "name": "空气炸锅脆皮鸡",
+    "name": "空气炸锅鸡腿肉",
     "path": "dishes/meat_dish/空气炸锅脆皮现腌炸鸡/外焦里嫩的脆皮空气炸锅炸鸡.jpeg",
     "crop": [
       0,
@@ -156,7 +164,7 @@
     ]
   },
   "mouthwatering-chicken": {
-    "name": "口水鸡",
+    "name": "温拌鸡腿",
     "path": "dishes/meat_dish/口水鸡/口水鸡.jpg"
   },
   "chilled-shredded-chicken": {
@@ -168,7 +176,7 @@
     "path": "dishes/meat_dish/卤菜/卤牛肉.jpeg"
   },
   "mapo-tofu": {
-    "name": "麻婆豆腐",
+    "name": "少油麻婆豆腐",
     "path": "dishes/meat_dish/麻婆豆腐/1.jpeg"
   },
   "steak": {
@@ -176,12 +184,14 @@
     "path": "dishes/meat_dish/牛排/牛排.jpg"
   },
   "beer-duck": {
-    "name": "啤酒鸭",
+    "name": "萝卜啤酒鸭",
     "path": "dishes/meat_dish/啤酒鸭/啤酒鸭.jpg"
   },
   "stuffed-green-pepper": {
-    "name": "青椒酿肉",
-    "path": "dishes/meat_dish/青椒酿/成品.jpeg"
+    "name": "青椒肉片蒸",
+    "path": "assets/dishes/stuffed-green-pepper.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
   },
   "pepper-potato-pork": {
     "name": "青椒土豆炒肉",
@@ -202,7 +212,7 @@
     "path": "dishes/meat_dish/瘦肉土豆片/瘦肉土豆片.jpg"
   },
   "boiled-beef": {
-    "name": "少油水煮牛肉",
+    "name": "一锅水煮牛肉",
     "path": "dishes/meat_dish/水煮牛肉/sznr12.jpg"
   },
   "potato-pork-ribs": {
@@ -222,15 +232,15 @@
     "path": "dishes/meat_dish/小炒黄牛肉/小炒黄牛肉.jpg"
   },
   "chicken-liver-stirfry": {
-    "name": "小炒鸡肝",
+    "name": "青椒鸡肝",
     "path": "dishes/meat_dish/小炒鸡肝/成品.jpg"
   },
   "xinjiang-chicken": {
-    "name": "新疆大盘鸡",
+    "name": "少油新疆大盘鸡",
     "path": "dishes/meat_dish/新疆大盘鸡/大盘鸡.jpeg"
   },
   "chu-hou-beef-brisket": {
-    "name": "柱候牛腩",
+    "name": "少酱柱候牛腩",
     "path": "dishes/meat_dish/柱候牛腩/柱候牛腩.jpeg"
   },
   "zibo-bbq": {
@@ -254,8 +264,10 @@
     "path": "dishes/vegetable_dish/洋葱炒鸡蛋/1.jpeg"
   },
   "steamed-egg": {
-    "name": "嫩滑鸡蛋羹",
-    "path": "dishes/vegetable_dish/鸡蛋羹/鸡蛋羹.jpg"
+    "name": "虾仁蒸蛋",
+    "path": "assets/dishes/steamed-egg.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
   },
   "olive-bean-mince": {
     "name": "榄菜肉末四季豆",
@@ -286,5 +298,47 @@
   "egg-drop-soup": {
     "name": "朱雀冲蛋汤",
     "path": "dishes/soup/朱雀汤/朱雀汤.jpg"
+  },
+  "scallion-steamed-chicken": {
+    "name": "葱油蒸鸡腿",
+    "path": "assets/dishes/scallion-steamed-chicken.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
+  },
+  "tomato-shrimp": {
+    "name": "番茄虾仁",
+    "path": "assets/dishes/tomato-shrimp.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
+  },
+  "tomato-fish": {
+    "name": "番茄龙利鱼",
+    "path": "assets/dishes/tomato-fish.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
+  },
+  "shrimp-steamed-tofu": {
+    "name": "虾仁蒸豆腐",
+    "path": "assets/dishes/shrimp-steamed-tofu.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
+  },
+  "winter-melon-rib-soup": {
+    "name": "冬瓜排骨汤",
+    "path": "assets/dishes/winter-melon-rib-soup.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
+  },
+  "pumpkin-steamed-chicken": {
+    "name": "清蒸鸡腿南瓜",
+    "path": "assets/dishes/pumpkin-steamed-chicken.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
+  },
+  "tomato-shrimp-tofu-soup": {
+    "name": "番茄虾仁豆腐汤",
+    "path": "assets/dishes/tomato-shrimp-tofu-soup.svg",
+    "status": "photo-pending",
+    "note": "原创文字占位，不是菜品照片"
   }
 }
