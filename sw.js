@@ -1,4 +1,4 @@
-const CACHE = "dinner-lottery-nutrition-20261028-v2";
+const CACHE = "dinner-lottery-nutrition-20261028-v3";
 const DISH_IMAGES = [
   "./assets/dishes/blanched-shrimp.webp",
   "./assets/dishes/bream-tofu-stew.webp",
@@ -74,11 +74,11 @@ const CORE = [
   "./index.html",
   "./styles.css",
   "./app.js",
-  "./app.js?v=20261028",
+  "./app.js?v=20261028r3",
   "./src/recipes.js",
-  "./src/recipes.js?v=20261028",
+  "./src/recipes.js?v=20261028r3",
   "./src/state.js",
-  "./src/state.js?v=20261028",
+  "./src/state.js?v=20261028r3",
   "./src/share-card.js",
   "./manifest.webmanifest",
   "./assets/icons/apple-touch-icon.png",

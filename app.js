@@ -1,4 +1,4 @@
-import { recipes, recipeById, replacementIds } from "./src/recipes.js?v=20261028";
+import { recipes, recipeById, replacementIds } from "./src/recipes.js?v=20261028r3";
 import { renderRecipeImage } from "./src/share-card.js";
 import {
   STORAGE_KEY,
@@ -8,7 +8,7 @@ import {
   latestConfirmedId,
   sanitizeState,
   serializeState,
-} from "./src/state.js?v=20261028";
+} from "./src/state.js?v=20261028r3";
 
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -623,7 +623,7 @@ function initialize() {
 
   if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     navigator.serviceWorker.addEventListener("controllerchange", () => window.location.reload());
-    navigator.serviceWorker.register("./sw.js?v=20261028", { updateViaCache: "none" }).catch(() => {
+    navigator.serviceWorker.register("./sw.js?v=20261028r3", { updateViaCache: "none" }).catch(() => {
       showToast("离线缓存暂未启用，联网时重新打开可重试");
     });
   }
